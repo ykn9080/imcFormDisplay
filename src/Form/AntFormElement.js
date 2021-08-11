@@ -1,16 +1,10 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { globalVariable } from "../actions";
 import _ from "lodash";
 import "antd/dist/antd.css";
-import "../components/Common/Antd.css";
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  EditOutlined,
-  DeleteOutlined,
   QuestionCircleOutlined,
-  ScissorOutlined,
   MinusCircleOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
@@ -30,16 +24,15 @@ import {
   Row,
   Tooltip,
   Checkbox,
-  Popconfirm,
   Divider,
   Typography,
 } from "antd";
-import IconBtn from "../components/Common/IconButton";
+import IconBtn from "./config/IconButton";
 import { Range } from "rc-slider";
 import "rc-slider/assets/index.css";
 import "rc-color-picker/assets/index.css";
-import Sketcher from "../components/Color/Sketch.js";
-import { pickuniq } from "../components/functions/LodashUtil";
+import Sketcher from "./config/Sketch.js";
+import {pickuniq} from "./config/LodashUtil"
 
 const { MonthPicker, RangePicker } = DatePicker;
 const { Option, OptGroup } = Select;
@@ -53,140 +46,12 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+
 const AntFormElement = (props) => {
   const classes = useStyles();
   const history = useHistory();
-  const dispatch = useDispatch();
 
-  let edit = useSelector((state) => state.global.formEdit);
-  let open = useSelector((state) => state.global.openDialog);
-  let curdt = useSelector((state) => state.global.currentData);
-
-  function onChangeChk(event) {
-    let chklist = localStorage.getItem("chklist");
-    if (!chklist) chklist = [];
-    else chklist = JSON.parse(chklist);
-    const chk = event.target.checked;
-    const val = parseInt(event.target.value);
-    if (chk) chklist.push(val);
-    else
-      _.remove(chklist, function (num) {
-        return num === val;
-      });
-    localStorage.setItem("chklist", JSON.stringify(chklist));
-  }
-  const Inliner = (props) => {
-    return (
-      edit &&
-      ["nostyle", "button"].indexOf(props.type) === -1 && (
-        <Checkbox
-          value={props.seq}
-          // checked={checked[props.seq]}
-          onChange={onChangeChk}
-        />
-      )
-    );
-  };
-  const EditDel = (props) => {
-    const reorderlist = (list) => {
-      list.map((k, i) => {
-        k.seq = i;
-        list.splice(i, 1, k);
-        return null;
-      });
-      return list;
-    };
-    const deleteHandler = (props) => {
-      let delIndex;
-      const delfunc = (props) => {
-        curdt.data.list.map((k, i) => {
-          if (k.seq === props.seq) {
-            delIndex = i;
-            return curdt.data.list.splice(i, 1);
-          }
-          if (i > delIndex) return curdt.data.list.seq--;
-          return null;
-        });
-        curdt.data.list = reorderlist(curdt.data.list);
-        dispatch(globalVariable({ currentData: Object.assign({}, curdt) }));
-      };
-      if (props.type === "button" && props.btnArr) {
-        if (props.type === "button" && props.btnArr) {
-          if (props.btnArr.length === 1) delfunc(props.btnArr[0]);
-          else buttonSelect(props, delfunc);
-        }
-      } else delfunc(props);
-    };
-    function buttonSelect(props, callback) {
-      // const onChange = (e) => {
-      //   callback(e.target.value);
-      // };
-    }
-
-    const editHandler = (props) => {
-      const fromEdit = (val) => {
-        dispatch(globalVariable({ elementData: val }));
-        dispatch(globalVariable({ openDialog: true }));
-        dispatch(globalVariable({ openDialog2: false }));
-        open = true;
-      };
-      if (props.type === "button" && props.btnArr) {
-        if (props.btnArr.length === 1) fromEdit(props.btnArr[0]);
-        else buttonSelect(props, fromEdit);
-      } else fromEdit(props);
-    };
-    const splitInline = (props) => {
-      props.array.map((k, i) => {
-        k.seq = props.seq + i;
-        if (k.label1) k.label = k.label1;
-
-        delete k.width;
-        return null;
-      });
-
-      let dList = [];
-      dList = curdt.data.list;
-
-      dList = _.orderBy(dList, ["seq"]);
-      dList.splice(props.seq, 1, ...props.array);
-      dList.map((k, i) => {
-        return (k.seq = i);
-      });
-      curdt.data.list = dList;
-      let newObj = {};
-      newObj = curdt;
-      dispatch(globalVariable({ currentData: newObj }));
-      history.push("./formview?rtn=formedit");
-    };
-
-    return (
-      edit && (
-        <div className="dvEditIcon">
-          <EditOutlined
-            className={classes.icon}
-            onClick={() => editHandler(props)}
-          />
-          {["nostyle", "form.list"].indexOf(props.type) > -1 ? (
-            <Tooltip title="split & make elements seperate ">
-              <ScissorOutlined onClick={() => splitInline(props)} />
-            </Tooltip>
-          ) : (
-            <Popconfirm
-              title="Are you sure delete?"
-              onConfirm={() => deleteHandler(props)}
-              okText="Yes"
-              cancelText="No"
-            >
-              <DeleteOutlined
-                className={classes.icon}
-                // onClick={() => deleteHandler(props)}
-              />
-            </Popconfirm>
-          )}
-        </div>
-      )
-    );
-  };
+  
 
   const FormItem = (props) => {
     let formItemProps = {
@@ -801,21 +666,7 @@ const AntFormElement = (props) => {
     );
   };
 
-  const grid = (
-    <>
-      <Row gutter={4}>
-        <Col span={1}>
-          <Inliner {...props} />
-        </Col>
-        <Col span={22}>
-          <FormItem {...props} />
-        </Col>
-        <Col span={1}>
-          <EditDel {...props} />
-        </Col>
-      </Row>
-    </>
-  );
+ 
   let colnum = 24;
   colnum = colnum / props.formColumn;
   // if (props.formColumn === 1) {
@@ -826,7 +677,7 @@ const AntFormElement = (props) => {
       <FormItem {...props} />
     </Col>
   ) : (
-    <Col span={colnum}>{grid}</Col>
+   null
   );
 };
 export default AntFormElement;

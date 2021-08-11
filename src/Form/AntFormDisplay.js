@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import $ from "jquery";
 import _ from "lodash";
 import "antd/dist/antd.css";
-import "../components/Common/Antd.css";
 import axios from "axios";
-import { currentsetting } from "../config/index.js";
+import { currentsetting } from "./config/index.js";
 import { Form, Row, Typography, Spin } from "antd";
 import AntFormElement from "./AntFormElement";
-import { makeBtnArray } from "./AntFormDbOption";
-import { localHandle } from "../components/functions/LodashUtil";
 
 const { Title, Paragraph } = Typography;
 
@@ -256,6 +252,55 @@ export const shouldUpdateCheck = (list, k) => {
   if (shouldParent.defaultValue === k.shouldvalue) return k;
   else return null;
 };
+
+export const makeBtnArray = (list) => {
+  //if already has btnArr, pass
+
+  //combine all button as array
+  const btn = _.filter(list, (o) => {
+    return o.type === "button";
+  });
+  if (btn.length === 0) return list;
+  if (btn.length > 0 && btn[0].btnArr) {
+    //this is at ElementInput.js instantView at  bottom
+    //add onClick event to load and edit each button one by one
+    return list;
+  } else {
+    const others = _.filter(list, (o) => {
+      return o.type !== "button";
+    });
+    let setting = {};
+    const align = _.filter(btn, (o) => {
+      return o.align === "right";
+    });
+    const block = _.filter(btn, (o) => {
+      return o.block === true;
+    });
+    if (align.length > 0) setting = { align: "right" };
+    if (block.length > 0) setting = { ...setting, block: true };
+    if (btn.length > 0) setting = { ...setting, seq: btn[0].seq };
+    others.push({ type: "button", btnArr: btn, ...setting });
+    return others;
+  }
+};
+
+//handle localStorage set,get,remove
+// if data==="remove" removeItem
+//update: localHandle("title",{data})
+export const localHandle = (title, data) => {
+  //if no data get
+  if (data) {
+    if (data === "remove") localStorage.removeItem(title);
+    else localStorage.setItem(title, JSON.stringify(data));
+  }
+  //else set data
+  else {
+    let getitem = localStorage.getItem(title);
+    if (getitem) return JSON.parse(getitem);
+  }
+};
+
+
 const AntFormDisplay = (props) => {
   let showall = false; //useSelector((state) => state.global.showall); //edit
   const [formArray, setFormArray] = useState();
