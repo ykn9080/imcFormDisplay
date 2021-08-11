@@ -1,29 +1,24 @@
 {
   "name": "imcformbuilder",
-  "version": "0.1.15",
-  "module": "dist/Form/AntFormDisplay.js",
-  "main": "dist/Form/AntFormDisplay.js",
+  "version": "0.1.20",
+  "module": "dist/AntFormDisplay.js",
+  "main": "dist/AntFormDisplay.js",
   "private": false,
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
-    "@emotion/react": "^11.4.0",
     "@material-ui/core": "^4.12.1",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.60",
     "antd": "^4.16.7",
     "axios": "^0.21.1",
-    "bootstrap": "^5.0.2",
-    "bson": "^4.4.1",
     "fg-loadcss": "^3.1.0",
     "jquery": "^3.6.0",
-    "jquery-ui-bundle": "^1.12.1-migrate",
     "lodash": "^4.17.21",
     "rc-color-picker": "^1.2.6",
     "rc-slider": "^9.7.2",
     "react": "^17.0.2",
     "react-color": "^2.19.3",
     "react-dom": "^17.0.2",
-    "react-icons": "^4.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3"
   },
@@ -38,7 +33,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "publish:npm": "rm -rf dist && mkdir dist && babel src -d dist/Form --copy-files"
+    "publish:npm": "rm -rf dist && mkdir dist && babel src/Form -d dist --copy-files"
   },
   "babel": {
     "presets": [
