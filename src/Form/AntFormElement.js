@@ -32,7 +32,7 @@ import { Range } from "rc-slider";
 import "rc-slider/assets/index.css";
 import "rc-color-picker/assets/index.css";
 import Sketcher from "./config/Sketch.js";
-import {pickuniq} from "./config/LodashUtil"
+import { pickuniq } from "./config/LodashUtil";
 
 const { MonthPicker, RangePicker } = DatePicker;
 const { Option, OptGroup } = Select;
@@ -46,12 +46,9 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-
 const AntFormElement = (props) => {
   const classes = useStyles();
   const history = useHistory();
-
-  
 
   const FormItem = (props) => {
     let formItemProps = {
@@ -666,7 +663,6 @@ const AntFormElement = (props) => {
     );
   };
 
- 
   let colnum = 24;
   colnum = colnum / props.formColumn;
   // if (props.formColumn === 1) {
@@ -676,8 +672,6 @@ const AntFormElement = (props) => {
     <Col span={colnum}>
       <FormItem {...props} />
     </Col>
-  ) : (
-   null
-  );
+  ) : null;
 };
 export default AntFormElement;

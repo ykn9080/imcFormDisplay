@@ -4,8 +4,9 @@ import _ from "lodash";
 import "antd/dist/antd.css";
 import axios from "axios";
 import { currentsetting } from "./config/index.js";
-import { Form, Row, Typography, Spin } from "antd";
+import { Form, Row, Typography, Spin, Button } from "antd";
 import AntFormElement from "./AntFormElement";
+import EditFullscreen from "./EditFullscreen";
 
 const { Title, Paragraph } = Typography;
 
@@ -300,14 +301,14 @@ export const localHandle = (title, data) => {
   }
 };
 
-
 const AntFormDisplay = (props) => {
-  let showall = false; //useSelector((state) => state.global.showall); //edit
+  let showall = false;
   const [formArray, setFormArray] = useState();
   const [formSummary, setFormSummary] = useState(null);
   const [loading] = useState(false);
   const [fset, setFset] = useState();
   const [list, setList] = useState();
+  const [showfull, setShowfull] = useState(false);
   const [othersetting, setOthersetting] = useState({});
   let [form] = Form.useForm();
   if (props.form) {
@@ -322,7 +323,27 @@ const AntFormDisplay = (props) => {
       lineHeightSetting(lh);
     }
   });
-
+  useEffect(() => {
+    window.addEventListener("message", function (event) {
+      console.log("message", event);
+      let frameToRemove = document.getElementById("iframe");
+      if (frameToRemove) {
+        frameToRemove.parentNode.removeChild(frameToRemove);
+        document.body.style.overflow = "inherit";
+      }
+    });
+  }, []);
+  useEffect(() => {
+    if (showfull) {
+      setTimeout(function () {
+        var iframeEl = document.getElementById("iframe1");
+        iframeEl.contentWindow.postMessage(
+          JSON.stringify({ list: list, setting: fset }),
+          "*"
+        );
+      }, 2000);
+    }
+  }, [showfull]);
   useEffect(() => {
     if (props.changedInitial) {
       form.setFieldsValue(props?.formArray?.setting?.initialValues);
@@ -599,6 +620,19 @@ const AntFormDisplay = (props) => {
       </Typography>
     </div>
   );
+  const editForm = (
+    <div style={{ textAlign: "right" }}>
+      <Button
+        type="link"
+        onClick={() => {
+          setShowfull(true);
+        }}
+      >
+        edit
+      </Button>
+    </div>
+  );
+
   const ele = (
     <Element
       key={Math.random()}
@@ -617,9 +651,15 @@ const AntFormDisplay = (props) => {
     ) : (
       ele
     );
+  const onFullClose = () => {
+    setShowfull(false);
+  };
+  function receiveDataFromIFrame(data) {
+    console.log("Received data from iframe:", data);
+  }
   return (
     <>
-      {fset && props.showtitle && formhead}
+      {editForm}
       {fset && (
         <Form
           name={fset.name}
@@ -639,6 +679,32 @@ const AntFormDisplay = (props) => {
       )}
       <Spin spinning={loading} />
       <h3>hello</h3>
+      {showfull ? (
+        <EditFullscreen onClose={onFullClose}>
+          {/* <div
+            dangerouslySetInnerHTML={{
+              __html:
+                "<iframe src='http://localhost:3001' sandbox='allow-scripts allow-same-origin' style=' display: block;background: #000;border: none;height: 100vh;width: 99vw;overflow:hidden;overflow-x:hidden;overflow-y:hidden;'/>",
+            }}
+          /> */}
+          <iframe
+            title="ifForm"
+            id="iframe1"
+            src="http://localhost:3001"
+            sandbox="allow-scripts allow-same-origin"
+            style={{
+              display: "block",
+              background: "#000",
+              border: "none",
+              height: "100vh",
+              width: "99vw",
+              overflow: "hidden",
+              overflowX: "hidden",
+              overflowY: "hidden",
+            }}
+          />
+        </EditFullscreen>
+      ) : null}
     </>
   );
 };
