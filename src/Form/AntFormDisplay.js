@@ -4,9 +4,18 @@ import _ from "lodash";
 import "antd/dist/antd.css";
 import axios from "axios";
 import { currentsetting } from "./config/index.js";
-import { Form, Row, Typography, Spin, Button } from "antd";
+import {
+  Form,
+  Row,
+  Typography,
+  Spin,
+  Button,
+  Modal,
+  Tooltip,
+  message,
+} from "antd";
 import AntFormElement from "./AntFormElement";
-import EditFullscreen from "./EditFullscreen";
+import EditFullscreen from "./config/EditFullscreen";
 
 const { Title, Paragraph } = Typography;
 
@@ -306,6 +315,7 @@ const AntFormDisplay = (props) => {
   const [formArray, setFormArray] = useState();
   const [formSummary, setFormSummary] = useState(null);
   const [loading] = useState(false);
+  const [visible, setVisible] = useState(false);
   const [fset, setFset] = useState();
   const [list, setList] = useState();
   const [showfull, setShowfull] = useState(false);
@@ -326,11 +336,6 @@ const AntFormDisplay = (props) => {
   useEffect(() => {
     window.addEventListener("message", function (event) {
       console.log("message", event);
-      let frameToRemove = document.getElementById("iframe");
-      if (frameToRemove) {
-        frameToRemove.parentNode.removeChild(frameToRemove);
-        document.body.style.overflow = "inherit";
-      }
     });
   }, []);
   useEffect(() => {
@@ -341,7 +346,7 @@ const AntFormDisplay = (props) => {
           JSON.stringify({ list: list, setting: fset }),
           "*"
         );
-      }, 2000);
+      }, 0);
     }
   }, [showfull]);
   useEffect(() => {
@@ -620,8 +625,42 @@ const AntFormDisplay = (props) => {
       </Typography>
     </div>
   );
+  const copyClipboard = () => {
+    navigator.clipboard.writeText(
+      JSON.stringify({ list: list, setting: fset }, null, 4)
+    );
+    message.info("Copied to clipboard");
+  };
+
+  const modal = (
+    <Modal
+      visible={visible}
+      title="Title"
+      onCancel={() => setVisible(false)}
+      footer={[
+        <Tooltip title="Copy code to clipboard">
+          <Button key="copy" onClick={copyClipboard}>
+            Copy
+          </Button>
+        </Tooltip>,
+        <Button key="submit" type="primary" onClick={() => setVisible(false)}>
+          Close
+        </Button>,
+      ]}
+    >
+      <div>{JSON.stringify({ list: list, setting: fset }, null, 4)}</div>
+    </Modal>
+  );
   const editForm = (
     <div style={{ textAlign: "right" }}>
+      <Button
+        type="link"
+        onClick={() => {
+          setVisible(true);
+        }}
+      >
+        code
+      </Button>
       <Button
         type="link"
         onClick={() => {
@@ -654,12 +693,17 @@ const AntFormDisplay = (props) => {
   const onFullClose = () => {
     setShowfull(false);
   };
-  function receiveDataFromIFrame(data) {
-    console.log("Received data from iframe:", data);
-  }
+
+  const onFullSave = () => {
+    var iframeEl = document.getElementById("iframe1");
+    iframeEl.contentWindow.postMessage("onSaveClick", "*");
+    setShowfull(false);
+  };
+
   return (
     <>
       {editForm}
+      {modal}
       {fset && (
         <Form
           name={fset.name}
@@ -679,14 +723,8 @@ const AntFormDisplay = (props) => {
       )}
       <Spin spinning={loading} />
       <h3>hello</h3>
-      {showfull ? (
+      {showfull && (
         <EditFullscreen onClose={onFullClose}>
-          {/* <div
-            dangerouslySetInnerHTML={{
-              __html:
-                "<iframe src='http://localhost:3001' sandbox='allow-scripts allow-same-origin' style=' display: block;background: #000;border: none;height: 100vh;width: 99vw;overflow:hidden;overflow-x:hidden;overflow-y:hidden;'/>",
-            }}
-          /> */}
           <iframe
             title="ifForm"
             id="iframe1"
@@ -704,7 +742,7 @@ const AntFormDisplay = (props) => {
             }}
           />
         </EditFullscreen>
-      ) : null}
+      )}
     </>
   );
 };
