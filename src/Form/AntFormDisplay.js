@@ -336,6 +336,13 @@ const AntFormDisplay = (props) => {
   useEffect(() => {
     window.addEventListener("message", function (event) {
       console.log("message", event);
+      if (event.origin.startsWith("http://localhost:3001")) {
+        const frm = JSON.parse(event.data);
+        console.log(frm);
+        makeFormArray(frm.data);
+        setFormArray(frm.data);
+        setShowfull(false);
+      }
     });
   }, []);
   useEffect(() => {
@@ -343,10 +350,10 @@ const AntFormDisplay = (props) => {
       setTimeout(function () {
         var iframeEl = document.getElementById("iframe1");
         iframeEl.contentWindow.postMessage(
-          JSON.stringify({ list: list, setting: fset }),
+          { data: { list: list, setting: fset } },
           "*"
         );
-      }, 0);
+      }, 2000);
     }
   }, [showfull]);
   useEffect(() => {
