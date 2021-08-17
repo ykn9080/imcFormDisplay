@@ -318,7 +318,9 @@ const AntFormDisplay = (props) => {
   const [visible, setVisible] = useState(false);
   const [fset, setFset] = useState();
   const [list, setList] = useState();
+  const [api, setApi] = useState();
   const [showfull, setShowfull] = useState(false);
+  const [showedit, setShowedit] = useState(false);
   const [othersetting, setOthersetting] = useState({});
   let [form] = Form.useForm();
   if (props.form) {
@@ -339,18 +341,22 @@ const AntFormDisplay = (props) => {
       if (event.origin.startsWith("http://localhost:3001")) {
         const frm = JSON.parse(event.data);
         console.log(frm);
+        const newapi = frm.data.api;
+        delete frm.data.api;
         makeFormArray(frm.data);
         setFormArray(frm.data);
+        if (newapi) setApi(newapi);
         setShowfull(false);
       }
     });
+    if (props.showedit === true) setShowedit(true);
   }, []);
   useEffect(() => {
     if (showfull) {
       setTimeout(function () {
         var iframeEl = document.getElementById("iframe1");
         iframeEl.contentWindow.postMessage(
-          { data: { list: list, setting: fset } },
+          { data: { list: list, setting: fset, api: api } },
           "*"
         );
       }, 2000);
@@ -709,7 +715,7 @@ const AntFormDisplay = (props) => {
 
   return (
     <>
-      {editForm}
+      {showedit === true && editForm}
       {modal}
       {fset && (
         <Form
@@ -729,7 +735,6 @@ const AntFormDisplay = (props) => {
         </Form>
       )}
       <Spin spinning={loading} />
-      <h3>hello</h3>
       {showfull && (
         <EditFullscreen onClose={onFullClose}>
           <iframe
