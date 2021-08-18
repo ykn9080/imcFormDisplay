@@ -318,7 +318,7 @@ const AntFormDisplay = (props) => {
   const [visible, setVisible] = useState(false);
   const [fset, setFset] = useState();
   const [list, setList] = useState();
-  const [api, setApi] = useState();
+  const [apiurl, setApiurl] = useState();
   const [showfull, setShowfull] = useState(false);
   const [showedit, setShowedit] = useState(false);
   const [othersetting, setOthersetting] = useState({});
@@ -341,11 +341,11 @@ const AntFormDisplay = (props) => {
       if (event.origin.startsWith("http://localhost:3001")) {
         const frm = JSON.parse(event.data);
         console.log(frm);
-        const newapi = frm.data.api;
-        delete frm.data.api;
+        const newapi = frm.data.apiurl;
+        delete frm.data.apiurl;
         makeFormArray(frm.data);
         setFormArray(frm.data);
-        if (newapi) setApi(newapi);
+        if (newapi) setApiurl(newapi);
         setShowfull(false);
       }
     });
@@ -356,7 +356,7 @@ const AntFormDisplay = (props) => {
       setTimeout(function () {
         var iframeEl = document.getElementById("iframe1");
         iframeEl.contentWindow.postMessage(
-          { data: { list: list, setting: fset, api: api } },
+          { data: { list: list, setting: fset, apiurl: apiurl } },
           "*"
         );
       }, 2000);
@@ -382,14 +382,14 @@ const AntFormDisplay = (props) => {
     if (props.formArray) {
       makeFormArray(props.formArray);
       setFormArray(props.formArray);
+
+      setApiurl(props.formArray.apiurl);
     }
     //execute when dboption applied
     else if (props.formid)
-      axios
-        .get(`${currentsetting.webserviceprefix}bootform/${props.formid}`)
-        .then((response) => {
-          settingup(response.data);
-        });
+      axios.get(`${props.apiurl}/${props.formid}`).then((response) => {
+        settingup(response.data);
+      });
   }, [props.formid, props.formArray, props.patchlist, props.initialValues]);
 
   const lineHeightSetting = (lh) => {
@@ -707,12 +707,6 @@ const AntFormDisplay = (props) => {
     setShowfull(false);
   };
 
-  const onFullSave = () => {
-    var iframeEl = document.getElementById("iframe1");
-    iframeEl.contentWindow.postMessage("onSaveClick", "*");
-    setShowfull(false);
-  };
-
   return (
     <>
       {showedit === true && editForm}
@@ -742,6 +736,7 @@ const AntFormDisplay = (props) => {
             id="iframe1"
             src="http://localhost:3001"
             sandbox="allow-scripts allow-same-origin"
+            allow="clipboard-write"
             style={{
               display: "block",
               background: "#000",

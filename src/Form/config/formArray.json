@@ -90,9 +90,16 @@
   "setting": {
     "editable": false,
     "name": "antform",
-    "layout": "vertical",
-    "formColumn": 2,
-    "formItemLayout": null,
+    "layout": "horizontal",
+    "formColumn": 1,
+    "formItemLayout": {
+      "labelCol": {
+        "span": 4
+      },
+      "wrapperCol": {
+        "span": 20
+      }
+    },
     "tailLayout": {},
     "initial": {},
     "size": "middle",
@@ -101,5 +108,5 @@
     "onFinish": "{values => {console.log(values);};}",
     "initialValues": {}
   },
-  "api": "http://imcmaster.iptime.org:9006/bootform"
+  "apiurl": "http://imcmaster.iptime.org:9006/bootform"
 }
