@@ -3,21 +3,9 @@ import $ from "jquery";
 import _ from "lodash";
 import "antd/dist/antd.css";
 import axios from "axios";
-import { currentsetting } from "./config/index.js";
-import {
-  Form,
-  Row,
-  Typography,
-  Spin,
-  Button,
-  Modal,
-  Tooltip,
-  message,
-} from "antd";
+import { Form, Row, Spin, Button, Modal, Tooltip, message } from "antd";
 import AntFormElement from "./AntFormElement";
 import EditFullscreen from "./config/EditFullscreen";
-
-const { Title, Paragraph } = Typography;
 
 export const labelShowhide = (list, layout) => {
   let nostylelist = _.filter(list, (o) => {
@@ -159,7 +147,7 @@ export const replaceListbyInitValues = (list, changedInitVals) => {
       k = { ...k, defaultValue: val };
       list.splice(i, 1, k);
     }
-    return;
+    return null;
   });
   return list;
 };
@@ -413,7 +401,7 @@ const AntFormDisplay = (props) => {
       }, 200);
   };
   const settingup = (data) => {
-    if (props.patchlist) list = makePatchList(props.patchlist, list);
+    if (props.patchlist) setList(makePatchList(props.patchlist, list));
     setFormArray(data.data);
     makeFormArray(data.data);
 
@@ -630,14 +618,6 @@ const AntFormDisplay = (props) => {
     }
   };
 
-  const formhead = (
-    <div style={{ textAlign: "left" }}>
-      <Typography>
-        <Title level={4}>{fset?.title}</Title>
-        <Paragraph>{fset?.desc}</Paragraph>
-      </Typography>
-    </div>
-  );
   const copyClipboard = () => {
     navigator.clipboard.writeText(
       JSON.stringify({ list: list, setting: fset }, null, 4)

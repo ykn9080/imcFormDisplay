@@ -1,8 +1,6 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
 import _ from "lodash";
 import "antd/dist/antd.css";
-import { makeStyles } from "@material-ui/core/styles";
 import {
   QuestionCircleOutlined,
   MinusCircleOutlined,
@@ -37,19 +35,8 @@ import { pickuniq } from "./config/LodashUtil";
 const { MonthPicker, RangePicker } = DatePicker;
 const { Option, OptGroup } = Select;
 const { Text } = Typography;
-const useStyles = makeStyles(() => ({
-  root: {
-    flexGrow: 1,
-  },
-  icon: {
-    marginRight: 2,
-  },
-}));
 
 const AntFormElement = (props) => {
-  const classes = useStyles();
-  const history = useHistory();
-
   const FormItem = (props) => {
     let formItemProps = {
       ...(props.name && { name: props.name }),
@@ -362,6 +349,7 @@ const AntFormElement = (props) => {
                     style={{ display: "flex", flexWrap: "nowrap", padding: 8 }}
                   >
                     <a
+                      href="#!"
                       style={{
                         flex: "none",
                         padding: "8px",
