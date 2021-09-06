@@ -113,7 +113,14 @@ formArray is composed of two parts:
 ## Edit Form
 
 If you provide pros as showedit={true} and click edit button, it redirect edit page.
-<img src="http://imcmaster.iptime.org:9010/images/imcformedit.PNG?Content-Disposition=attachment%3B%20filename%3D%22imcformedit.PNG%22&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=yknam%2F20210906%2F%2Fs3%2Faws4_request&X-Amz-Date=20210906T083204Z&X-Amz-Expires=432000&X-Amz-SignedHeaders=host&X-Amz-Signature=34d0bff62c25fc57531c6c1108b82fe83823ac88a4d8dd8a9965cd966b238cd5">
+
+```c
+![Display Mode](<img width="300px" src="http://imcmaster.iptime.org:9010/images/imcformedit.PNG?Content-Disposition=attachment%3B%20filename%3D%22imcformedit.PNG%22&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=yknam%2F20210906%2F%2Fs3%2Faws4_request&X-Amz-Date=20210906T093552Z&X-Amz-Expires=432000&X-Amz-SignedHeaders=host&X-Amz-Signature=7dcfc4683906dff1a1831fd5f9d6fc8ce4278c74814707ce7a82bd8c73927fd4">)
+```
+
+```c
+![Edit Mode](<img width="300px" src="http://imcmaster.iptime.org:9010/images/imcformedit.PNG?Content-Disposition=attachment%3B%20filename%3D%22imcformedit.PNG%22&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=yknam%2F20210906%2F%2Fs3%2Faws4_request&X-Amz-Date=20210906T083204Z&X-Amz-Expires=432000&X-Amz-SignedHeaders=host&X-Amz-Signature=34d0bff62c25fc57531c6c1108b82fe83823ac88a4d8dd8a9965cd966b238cd5">)
+```
 
 ## Author
 
