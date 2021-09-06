@@ -4,7 +4,7 @@
 
 ### 🏠 [Homepage](http://imcmaster.iptime.org:3080)
 
-### ✨ [Demo](http://imcmaster.iptime.org:4009)
+### ✨ [Demo](<a href="http://imcmaster.iptime.org:4009" target="_blank">Squarespace</a>)
 
 ## Install
 
