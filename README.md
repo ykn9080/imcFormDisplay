@@ -4,7 +4,7 @@
 
 ### 🏠 [Homepage](http://imcmaster.iptime.org:3080)
 
-### ✨ [Demo](<a href="http://imcmaster.iptime.org:4009" target="_blank">Demo</a>)
+### ✨ <a href="http://imcmaster.iptime.org:4009/form/edit" target="_blank">[Demo]</a>
 
 ## Install
 
