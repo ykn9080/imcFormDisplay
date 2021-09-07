@@ -1,6 +1,6 @@
 {
   "name": "imcformbuilder",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "module": "dist/AntFormDisplay.js",
   "main": "dist/AntFormDisplay.js",
   "private": false,
@@ -29,9 +29,9 @@
       "react-app/jest"
     ]
   },
-  "proxy": "http://imcmaster.iptime.org:3081",
+  "proxy": "http://imcmaster.iptime.org:3080",
   "scripts": {
-    "start": "set PORT=3006 &&  react-scripts start",
+    "start": "set PORT=3081 &&  react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
