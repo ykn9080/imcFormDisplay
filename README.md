@@ -120,12 +120,7 @@ formArray is composed of two parts:
 If you provide pros as showedit={true} and click edit button, it redirect edit page.
 
 
-
-## Edit Form
-
-If you provide pros as showedit={true} and click edit button, it redirect edit page.
-
-
+[![FormEdit](https://i.ibb.co/ZhgW0SR/Imcformedit-small.png)](https://www.youtube.com/watch?v=_Fgp1g39Dc8 "Everything Is AWESOME")
 
 ## Author
 
