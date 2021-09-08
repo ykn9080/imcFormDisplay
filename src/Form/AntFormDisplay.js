@@ -688,7 +688,7 @@ const AntFormDisplay = (props) => {
   };
 
   return (
-    <>
+    <div style={{ width: "99vw" }}>
       {showedit === true && editForm}
       {modal}
       {fset && (
@@ -730,7 +730,7 @@ const AntFormDisplay = (props) => {
           />
         </EditFullscreen>
       )}
-    </>
+    </div>
   );
 };
 
