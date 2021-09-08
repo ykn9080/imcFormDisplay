@@ -1,5 +1,9 @@
 <h1 align="center">Welcome to Form Builder 👋</h1>
 
+![npm](https://img.shields.io/npm/v/imcformbuilder)
+![npm bundle size](https://img.shields.io/bundlephobia/min/imcformbuilder?style=plastic)
+![npm](https://img.shields.io/npm/dm/imcformbuild)
+
 > Make ant design base styled form with ease. It enable to use form by just adding json files of style and list. Form Builder provides editing function, such as adding, removing items, change look and feels like number of columes, vertical, horizontal title layout etc. It can edit existing form, also create new form from scratch.
 > 
 | Display   | Form Edit  |
