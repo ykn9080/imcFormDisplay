@@ -1,6 +1,11 @@
 <h1 align="center">Welcome to Form Builder 👋</h1>
 
 > Make ant design base styled form with ease. It enable to use form by just adding json files of style and list. Form Builder provides editing function, such as adding, removing items, change look and feels like number of columes, vertical, horizontal title layout etc. It can edit existing form, also create new form from scratch.
+> 
+| Display   | Form Edit  |
+|---|---|
+| <a href="http://imcmaster.iptime.org/form" ><img src="https://i.ibb.co/7yWH0tT/antformdisplay.png" width="400px"></a>  | <a href="http://imcmaster.iptime.org:3080" ><img src="https://i.ibb.co/RNbtwWF/imcformedit.png" width="400px"> </a> |
+
 
 ### 🏠 [Homepage](http://imcmaster.iptime.org:3080)
 
@@ -120,10 +125,7 @@ If you provide pros as showedit={true} and click edit button, it redirect edit p
 
 If you provide pros as showedit={true} and click edit button, it redirect edit page.
 
-<p float="left">
-![Display](https://i.ibb.co/7yWH0tT/antformdisplay.png= 250x)
-![Edit](https://i.ibb.co/RNbtwWF/imcformedit.png= 250x)
-</p>
+
 
 ## Author
 
