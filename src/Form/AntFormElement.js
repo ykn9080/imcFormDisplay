@@ -67,13 +67,20 @@ const AntFormElement = (props) => {
       );
       formItemProps = { ...formItemProps, label: tlabel };
     }
+    let spanlen = 0;
+    if (
+      props.formItemLayout &&
+      props.formItemLayout.labelCol &&
+      props.formItemLayout.labelCol.span
+    )
+      spanlen = props.formItemLayout.labelCol.span;
 
     let tailLayout = {
       ...((props.type === "button" && props.layout === "horizontal") |
         (["nostyle", "divider"].indexOf(props.type) > -1 && props.offset) && {
         wrapperCol: {
-          span: 24 - props?.formItemLayout?.labelCol?.span,
-          offset: props?.formItemLayout?.labelCol?.span,
+          span: 24 - spanlen,
+          offset: spanlen,
         },
       }),
     };
@@ -137,7 +144,7 @@ const AntFormElement = (props) => {
             </>
           );
         case "form.list":
-          let initArr = props?.initialValues;
+          let initArr = props.initialValues;
           if (initArr) {
             if (Array.isArray(initArr) === false)
               initArr = Object.values(initArr); //props.label, props.initialValues:{Value:[{value:"abc",color:"green"}]}, or [{},{}]

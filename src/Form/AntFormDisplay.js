@@ -6,6 +6,7 @@ import axios from "axios";
 import { Form, Row, Spin, Button, Modal, Tooltip, message } from "antd";
 import AntFormElement from "./AntFormElement";
 import EditFullscreen from "./config/EditFullscreen";
+import formArrayData from "./config/formArray.json";
 
 export const labelShowhide = (list, layout) => {
   let nostylelist = _.filter(list, (o) => {
@@ -104,7 +105,7 @@ const optionParse = (row, val) => {
     const rtn = _.find(row.optionArray, (o) => {
       return o.value === val;
     });
-    return rtn?.text;
+    return rtn.text;
   }
 };
 const humanParse = (val) => {
@@ -130,8 +131,9 @@ export const shouldConditionFilter = (list, savedValue) => {
   list.map((k, i) => {
     if (k.shouldfield) {
       const row = findShouldRow(list, k.shouldfield);
+      if (!row) return null;
 
-      if (!(savedValue?.[row?.name] && savedValue[row.name] === true)) {
+      if (!(savedValue[row.name] && savedValue[row.name] === true)) {
         delete savedValue[k.name];
       }
     }
@@ -141,14 +143,16 @@ export const shouldConditionFilter = (list, savedValue) => {
 };
 
 export const replaceListbyInitValues = (list, changedInitVals) => {
-  list.map((k, i) => {
-    const val = changedInitVals?.[k.name];
-    if (typeof val !== "undefined") {
-      k = { ...k, defaultValue: val };
-      list.splice(i, 1, k);
-    }
-    return null;
-  });
+  if (changedInitVals) {
+    list.map((k, i) => {
+      const val = changedInitVals[k.name];
+      if (typeof val !== "undefined") {
+        k = { ...k, defaultValue: val };
+        list.splice(i, 1, k);
+      }
+      return null;
+    });
+  }
   return list;
 };
 export const createInitValuesWithDefault = (list, changedInitVals) => {
@@ -159,7 +163,7 @@ export const createInitValuesWithDefault = (list, changedInitVals) => {
   list.map((k, i) => {
     defVal = k.defaultValue;
     if (typeof changedInitVals !== "undefined") {
-      defVal = changedInitVals?.[k.name];
+      defVal = changedInitVals[k.name];
     }
     if (typeof defVal !== "undefined") {
       if (k.type === "form.list") {
@@ -300,11 +304,11 @@ export const localHandle = (title, data) => {
 
 const AntFormDisplay = (props) => {
   let showall = false;
-  const [formArray, setFormArray] = useState();
+  const [formArray, setFormArray] = useState(formArrayData);
   const [formSummary, setFormSummary] = useState(null);
   const [loading] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [fset, setFset] = useState();
+  const [fset, setFset] = useState({});
   const [list, setList] = useState();
   const [apiurl, setApiurl] = useState();
   const [showfull, setShowfull] = useState(false);
@@ -315,8 +319,16 @@ const AntFormDisplay = (props) => {
     form = props.form;
   }
   useEffect(() => {
-    if (props.changedInitial) {
-      form.setFieldsValue(props?.formArray?.setting?.initialValues);
+    if (
+      props.changedInitial &&
+      props.formArray &&
+      props.formArray.setting &&
+      props.formArray.setting.initialValues
+    ) {
+      form.setFieldsValue(props.formArray.setting.initialValues);
+    }
+    if (props.initialValues) {
+      form.setFieldsValue(props.initialValues);
     }
     if (formArray) {
       const lh = formArray.setting.lineheight;
@@ -325,10 +337,8 @@ const AntFormDisplay = (props) => {
   });
   useEffect(() => {
     window.addEventListener("message", function (event) {
-      console.log("message", event);
-      if (event.origin.startsWith("http://imcmaster.iptime.org:3080")) {
+      if (event.origin.startsWith("http://imcmaster.iptime.org")) {
         const frm = JSON.parse(event.data);
-        console.log(frm);
         const newapi = frm.data.apiurl;
         delete frm.data.apiurl;
         makeFormArray(frm.data);
@@ -337,7 +347,8 @@ const AntFormDisplay = (props) => {
         setShowfull(false);
       }
     });
-    if (props.showedit === true) setShowedit(true);
+    if ((props.showedit === true) | (props.showmenu === true))
+      setShowedit(true);
   }, []);
   useEffect(() => {
     if (showfull) {
@@ -351,13 +362,14 @@ const AntFormDisplay = (props) => {
     }
   }, [showfull]);
   useEffect(() => {
-    if (props.changedInitial) {
-      form.setFieldsValue(props?.formArray?.setting?.initialValues);
+    if (props.changedInitial && props.formArray && props.formArray.setting) {
+      form.setFieldsValue(props.formArray.setting.initialValues);
     }
-  }, [props?.formArray?.setting?.initialValues]);
+  }, [props.formArray.setting.initialValues]);
 
   useEffect(() => {
     form.resetFields();
+    form.setFieldsValue(props.initialValues);
     setTimeout(() => {
       if (props.formArray) {
         const lh = props.formArray.setting.lineheight;
@@ -589,8 +601,10 @@ const AntFormDisplay = (props) => {
   };
 
   const Element = (props) => {
+    if (!props.initialValues) return null;
     let list1 = replaceListbyInitValues(list, props.initialValues);
     list1 = makeBtnArray(list1);
+
     return list1.map((k, i) => {
       let formitem = <AntFormElement key={i} {...k} {...props} />;
       if (k.shouldupdate && showall !== true)
@@ -668,17 +682,17 @@ const AntFormDisplay = (props) => {
   const ele = (
     <Element
       key={Math.random()}
-      formColumn={fset?.formColumn}
-      layout={fset?.layout}
-      formItemLayout={fset?.formItemLayout}
-      tailLayout={fset?.tailLayout}
-      editable={fset?.editable}
-      initialValues={fset?.initialValues} //for input.color not working
+      formColumn={fset.formColumn}
+      layout={fset.layout}
+      formItemLayout={fset.formItemLayout}
+      tailLayout={fset.tailLayout}
+      editable={fset.editable}
+      initialValues={fset.initialValues} //for input.color not working
       {...othersetting}
     />
   );
   const elem =
-    fset?.formColumn > 1 ? (
+    fset.formColumn > 1 ? (
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>{ele}</Row>
     ) : (
       ele
@@ -688,7 +702,7 @@ const AntFormDisplay = (props) => {
   };
 
   return (
-    <div style={{ width: "99vw" }}>
+    <div style={{ marginRight: 5 }}>
       {showedit === true && editForm}
       {modal}
       {fset && (
@@ -702,7 +716,7 @@ const AntFormDisplay = (props) => {
           onValuesChange={
             props.onValuesChange ? onValuesChange : fset.onValuesChange
           }
-          initialValues={fset?.initialValues}
+          initialValues={fset.initialValues}
           size={fset.size}
         >
           {elem}

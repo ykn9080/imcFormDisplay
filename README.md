@@ -5,11 +5,10 @@
 ![npm](https://img.shields.io/npm/dm/imcformbuild)
 
 > Make ant design base styled form with ease. It enable to use form by just adding json files of style and list. Form Builder provides editing function, such as adding, removing items, change look and feels like number of columes, vertical, horizontal title layout etc. It can edit existing form, also create new form from scratch.
-> 
-| Display   | Form Edit  |
-|---|---|
-| <a href="http://imcmaster.iptime.org/form" ><img src="https://i.ibb.co/7yWH0tT/antformdisplay.png" width="400px"></a>  | <a href="http://imcmaster.iptime.org:3080" ><img src="https://i.ibb.co/RNbtwWF/imcformedit.png" width="400px"> </a> |
-
+>
+> | Display                                                                                                               | Form Edit                                                                                                           |
+> | --------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+> | <a href="http://imcmaster.iptime.org/form" ><img src="https://i.ibb.co/7yWH0tT/antformdisplay.png" width="400px"></a> | <a href="http://imcmaster.iptime.org:3080" ><img src="https://i.ibb.co/RNbtwWF/imcformedit.png" width="400px"> </a> |
 
 ### 🏠 [Homepage](http://imcmaster.iptime.org:3080)
 
@@ -26,13 +25,13 @@ npm install formbuilder
 While you develop, showedit={true} will show you edit button.
 Upon complete development, change showedit to false to hide button.
 
-```sh
- <AntFormDisplay
-      showedit={true}
-      formArray={formArray}
-      onFinish={onFinish}
-      onValuesChange={onValuesChange}
-    />
+```js
+<AntFormDisplay
+  showedit={true}
+  formArray={formArray}
+  onFinish={onFinish}
+  onValuesChange={onValuesChange}
+/>
 ```
 
 ## EventHandler
@@ -46,13 +45,13 @@ Upon complete development, change showedit to false to hide button.
    a. changedValues: {collection:"abc"},
    b. allValues:{collection:"abc",querystring:undefined.....}
 
-```sh
- const onFinish = (val) => {
-    console.log(val);
-  };
-  const onValuesChange = (changedValues, allValues) => {
-    console.log(changedValues, allValues);
-  };
+```js
+const onFinish = (val) => {
+  console.log(val);
+};
+const onValuesChange = (changedValues, allValues) => {
+  console.log(changedValues, allValues);
+};
 ```
 
 ## Sample data(formArray)
@@ -123,7 +122,6 @@ formArray is composed of two parts:
 
 If you provide pros as showedit={true} and click edit button, it redirect edit page.
 
-
 [![FormEdit](https://i.ibb.co/ZhgW0SR/Imcformedit-small.png)](https://www.youtube.com/watch?v=_Fgp1g39Dc8 "Everything Is AWESOME")
 
 ## Author
@@ -140,4 +138,3 @@ Give a ⭐️ if this project helped you!
 ---
 
 _This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
-
