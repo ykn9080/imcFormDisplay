@@ -14,7 +14,7 @@
 
 ### ✨ [Demo](http://imcmaster.iptime.org:4009/form/edit)
 
-English | [한글](./README - kr_KR.md)
+[English](./README.md) | 한글
 
 ## Install
 
@@ -24,25 +24,27 @@ npm install formbuilder
 
 ## Usage basic
 
-While you develop, showedit={true} will show you edit button.
-Upon complete development, change showedit to false to hide button.
+폼을 편집하기 위해서는 showedit={true} 를 코드중에 삽입해 주세요.
+이렇게 하면 상단에 편집버튼이 나타납니다. 편집 완료 후에는 코드를 삭제하세요.
 
 ```js
-<AntFormDisplay
+import FormDisplay from "imcformbuilder";
+<FormDisplay
   showedit={true}
   formArray={formArray}
   onFinish={onFinish}
   onValuesChange={onValuesChange}
-/>
+/>;
 ```
 
 ## EventHandler
 
-1. onFinish: By clicking submit button, onFinish function returns a value as object.
-   With this you can proceed other action, such as save to server or change state.
-   Return data is key value object for example: {collection:"abc",querystring:"123",.....}
-2. onValuesChange: returns two parameters, changedValues, allValues.
-   First value return just changed key value object, last value returns all key value object.
+1. onFinish: 하단의 submit버튼을 클릭하면 fire됩니다. onFinish eventhandler function을 작성하고 return 값으로 value를 설정하세요.
+   리턴값은 {collection:"abc",querystring:"123",.....}과 같이 키:값으로 구성된 json object입니다.
+
+2. onValuesChange: 자바스크립트의 onKeyPress와 같이 키입력과 동시에 리턴되는 이벤트핸들러로서 두개의 값을 리턴합니다.
+   첫번째는 현재 클릭한 폼아이템의 키와 값으로 구성된 json object이고, 두번째는 onFinish와 같이 전체 키,값으로 구성된 오브젝트입니다.
+
    e.g.
    a. changedValues: {collection:"abc"},
    b. allValues:{collection:"abc",querystring:undefined.....}
@@ -58,10 +60,10 @@ const onValuesChange = (changedValues, allValues) => {
 
 ## Sample data(formArray)
 
-formArray is composed of two parts:
+폼에 넘겨줄 값인 formArray는 폼아이템값과 폼스타일로 구성되어 있으며 아래와 같습니다.
 
-1. list: items in the form
-2. setting: look and feel of the form
+1. list: 폼 아이템
+2. setting: 폼 스타일
 
 ```sh
 {
@@ -122,7 +124,7 @@ formArray is composed of two parts:
 
 ## Edit Form
 
-If you provide pros as showedit={true} and click edit button, it redirect edit page.
+imcformbuilder로 showedit={true}값을 추가허면 폼 상단에 클릭버튼이 생성되며, 클릭시 수정페이지지로 이동합니다.
 
 [![FormEdit](https://i.ibb.co/ZhgW0SR/Imcformedit-small.png)](https://www.youtube.com/watch?v=_Fgp1g39Dc8 "Everything Is AWESOME")
 
@@ -132,11 +134,3 @@ If you provide pros as showedit={true} and click edit button, it redirect edit p
 
 - Website: http://imcmaster.iptime.org
 - Github: [@ykn9080](https://github.com/ykn9080)
-
-## Show your support
-
-Give a ⭐️ if this project helped you!
-
----
-
-_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
